@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %} Home page {% endblock %}
+
+{% block body %}
+    <div>
+        {% if comicbooks %}
+        	{% for comicbook in comicbooks %}
+            <div>
+    <div class="card" style="width: 9rem;">
+    <img src="{{ comicbook.ImgUrl.url }}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{ comicbook.title }}</h5>
+            <p class="card-text"><p>{{ comicbook.author }}</p></p>
+            <p class="card-text">{{ comicbook.rating }}/5</p>
+            <a href="{% url 'product-view' comicbook.id %}" class="btn btn-primary">See more</a>
+        </div>
+    </div>
+</div>
+            {% endfor %}
+
+        {% else %}
+        <div>
+            <h2>No results found</h2>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

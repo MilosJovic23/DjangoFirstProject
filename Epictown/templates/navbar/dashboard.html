@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %} Dashboard {% endblock %}
+
+{% block body %}
+    <div>
+        <a href="{% url 'create' %}">
+            <button class="btn btn-success" type="button">Add</button>
+        </a>
+        <table >
+            <thead>
+            <tr>
+                <th>title</th>
+                <th>author</th>
+                <th>rating</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for graphic_novel in comicbook  %}
+            <tr>
+                <td>{{ graphic_novel.title }}</td>
+                <td>{{ graphic_novel.author }}</td>
+                <td>{{ graphic_novel.rating }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{% url 'edit' graphic_novel.id %}">edit</a>
+                </td>
+                <td>
+                    <a class="btn btn-danger" href="{% url 'delete' graphic_novel.id %}">delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock body %}

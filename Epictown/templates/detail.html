@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %} Home page {% endblock %}
+
+{% block body %}
+    <div>
+            <div>
+                <h2>{{ comicbook.title }}</h2>
+                <a href="{% url 'product-view' comicbook.id %}"><img src="{{ comicbook.ImgUrl.url }}" alt="{{ comicbook.title }}" width="150"></a>
+                <p>{{ comicbook.author }}</p>
+                <p>{{ comicbook.format }}</p>
+                <p>{{ comicbook.rating }}/5</p>
+                <p>{{ comicbook.description }}</p>
+            </div>
+    </div>
+{% endblock %}
