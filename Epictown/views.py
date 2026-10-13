@@ -18,12 +18,12 @@ def about(request):
 def blog(request):
     return render(request, 'navbar/blog.html')
 
-class ListView( LoginRequiredMixin, ListView ):
+class ComicbookListView( LoginRequiredMixin, ListView ):
     model = Comicbook
     template_name = 'navbar/dashboard.html'
     context_object_name = 'comicbook'
 
-class CreateView(  LoginRequiredMixin,SuccessMessageMixin, CreateView ):
+class ComicbookCreateView(  LoginRequiredMixin,SuccessMessageMixin, CreateView ):
     model = Comicbook
     template_name = 'create.html'
     fields = ['title','description','format','ImgUrl','author','rating']
@@ -32,18 +32,18 @@ class CreateView(  LoginRequiredMixin,SuccessMessageMixin, CreateView ):
     def get_success_url(self):
         return reverse_lazy('product-view', kwargs={'pk': self.object.pk })
 
-class DetailView( DetailView ):
+class ComicbookDetailView( DetailView ):
     model = Comicbook
     template_name = 'detail.html'
 
-class EditView( LoginRequiredMixin, SuccessMessageMixin, UpdateView ):
+class ComicbookEditView( LoginRequiredMixin, SuccessMessageMixin, UpdateView ):
     model = Comicbook
     template_name = 'edit.html'
     fields = ['title','description','format','ImgUrl','author','rating']
     success_url = reverse_lazy('dashboard')
     success_message = "You have successfully edited the comicbook"
 
-class DeleteView( LoginRequiredMixin, SuccessMessageMixin, DeleteView ):
+class ComicbookDeleteView( LoginRequiredMixin, SuccessMessageMixin, DeleteView ):
     model = Comicbook
     template_name = 'delete.html'
     success_url = reverse_lazy('dashboard')
