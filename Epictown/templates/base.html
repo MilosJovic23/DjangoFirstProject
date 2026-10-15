@@ -22,7 +22,7 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'blog' %}">Blog</a>
         </li>
-          {% if user.is_authenticated %}
+          {% if request.user.is_staff %}
         <li class="nav-item">
           <a class="nav-link text-primary" href="{% url 'dashboard' %}">Dashboard</a>
         </li>

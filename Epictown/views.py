@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
@@ -23,7 +23,7 @@ class ComicbookListView( LoginRequiredMixin, ListView ):
     template_name = 'navbar/dashboard.html'
     context_object_name = 'comicbook'
 
-class ComicbookCreateView(  LoginRequiredMixin,SuccessMessageMixin, CreateView ):
+class ComicbookCreateView(  PermissionRegquiredMixin,SuccessMessageMixin, CreateView ):
     model = Comicbook
     template_name = 'create.html'
     fields = ['title','description','format','ImgUrl','author','rating']
@@ -36,14 +36,14 @@ class ComicbookDetailView( DetailView ):
     model = Comicbook
     template_name = 'detail.html'
 
-class ComicbookEditView( LoginRequiredMixin, SuccessMessageMixin, UpdateView ):
+class ComicbookEditView( PermissionRequiredMixin, SuccessMessageMixin, UpdateView ):
     model = Comicbook
     template_name = 'edit.html'
     fields = ['title','description','format','ImgUrl','author','rating']
     success_url = reverse_lazy('dashboard')
     success_message = "You have successfully edited the comicbook"
 
-class ComicbookDeleteView( LoginRequiredMixin, SuccessMessageMixin, DeleteView ):
+class ComicbookDeleteView( PermissionRequiredMixin, SuccessMessageMixin, DeleteView ):
     model = Comicbook
     template_name = 'delete.html'
     success_url = reverse_lazy('dashboard')
