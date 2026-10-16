@@ -1,10 +1,10 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import  UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
-from Epictown.forms import RegistrationForm, LoginForm
+from Epictown.forms import RegistrationForm
 from Epictown.models import Comicbook
 
 
@@ -18,12 +18,14 @@ def about(request):
 def blog(request):
     return render(request, 'navbar/blog.html')
 
-class ComicbookListView( LoginRequiredMixin, ListView ):
+class ComicbookListView( ListView ):
     model = Comicbook
     template_name = 'navbar/dashboard.html'
+
     context_object_name = 'comicbook'
 
-class ComicbookCreateView(  PermissionRegquiredMixin,SuccessMessageMixin, CreateView ):
+
+class ComicbookCreateView(  UserPassesTestMixin,SuccessMessageMixin, CreateView ):
     model = Comicbook
     template_name = 'create.html'
     fields = ['title','description','format','ImgUrl','author','rating']
@@ -32,22 +34,35 @@ class ComicbookCreateView(  PermissionRegquiredMixin,SuccessMessageMixin, Create
     def get_success_url(self):
         return reverse_lazy('product-view', kwargs={'pk': self.object.pk })
 
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_staff
+
+    raise_exception = 403
+
 class ComicbookDetailView( DetailView ):
     model = Comicbook
     template_name = 'detail.html'
 
-class ComicbookEditView( PermissionRequiredMixin, SuccessMessageMixin, UpdateView ):
+class ComicbookEditView( UserPassesTestMixin, SuccessMessageMixin, UpdateView ):
     model = Comicbook
     template_name = 'edit.html'
     fields = ['title','description','format','ImgUrl','author','rating']
     success_url = reverse_lazy('dashboard')
     success_message = "You have successfully edited the comicbook"
 
-class ComicbookDeleteView( PermissionRequiredMixin, SuccessMessageMixin, DeleteView ):
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_staff
+    raise_exception = 403
+
+class ComicbookDeleteView( UserPassesTestMixin, SuccessMessageMixin, DeleteView ):
     model = Comicbook
     template_name = 'delete.html'
     success_url = reverse_lazy('dashboard')
     success_message = "You have successfully deleted the comicbook"
+
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_staff
+    raise_exception = 403
 
 def search(request):
     if request.method == 'GET':
